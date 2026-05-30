@@ -1,0 +1,53 @@
+{{ define "content" }}
+<div class="page-title">
+  <span class="mono">address</span>
+  {{ if .Data.IsValid }}
+    <span class="badge badge-green">valid</span>
+  {{ else }}
+    <span class="badge badge-warn">invalid</span>
+  {{ end }}
+</div>
+
+<section>
+  <div class="detail-grid">
+    <div style="grid-column: 1 / -1">
+      <span class="detail-label">address</span>
+      <span class="detail-value mono">{{ .Data.Address }}</span>
+    </div>
+    <div>
+      <span class="detail-label">network</span>
+      <span class="detail-value mono">{{ .Data.Network }}</span>
+    </div>
+    {{ if .Data.IsValid }}
+    <div>
+      <span class="detail-label">script</span>
+      <span class="detail-value mono">{{ if .Data.IsScript }}yes{{ else }}no{{ end }}</span>
+    </div>
+    <div>
+      <span class="detail-label">witness</span>
+      <span class="detail-value mono">{{ if .Data.IsWitness }}yes{{ else }}no{{ end }}</span>
+    </div>
+    {{ end }}
+  </div>
+</section>
+
+{{ if .Data.IsValid }}
+<section>
+  <h2>scans</h2>
+  <div class="scan-links">
+    <a class="scan-link" href="/address/{{ .Data.Address }}/utxos">
+      <span class="scan-link-title">UTXO set scan</span>
+      <span class="scan-link-desc">find all unspent outputs for this address</span>
+    </a>
+    <a class="scan-link" href="/address/{{ .Data.Address }}/history">
+      <span class="scan-link-title">transaction history</span>
+      <span class="scan-link-desc">scan block filters for all transactions</span>
+    </a>
+  </div>
+</section>
+{{ else }}
+<section>
+  <p class="empty">address is not valid on {{ .Data.Network }}</p>
+</section>
+{{ end }}
+{{ end }}

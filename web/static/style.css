@@ -310,6 +310,40 @@ details pre {
 
 .error-back { font-size: .84rem; }
 
+/* ── scan links (address page) ───────────────────────────────────────────── */
+
+.scan-links {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.scan-link {
+  display: flex;
+  flex-direction: column;
+  gap: .25rem;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: 3px;
+  padding: .75rem 1.1rem;
+  min-width: 200px;
+  text-decoration: none;
+  transition: border-color .15s;
+}
+.scan-link:hover { border-color: var(--accent); text-decoration: none; }
+
+.scan-link-title {
+  font-family: var(--mono);
+  font-size: .84rem;
+  color: var(--accent);
+}
+
+.scan-link-desc {
+  font-size: .75rem;
+  color: var(--text-dim);
+}
+
 /* ── responsive ──────────────────────────────────────────────────────────── */
 
 @media (max-width: 640px) {

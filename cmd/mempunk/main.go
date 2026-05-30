@@ -82,6 +82,7 @@ func run() error {
 	e.GET("/tx/:txid", h.Tx)
 	e.GET("/search", h.Search)
 	e.GET("/node", h.Node)
+	e.GET("/address/:addr", h.Address)
 
 	e.HTTPErrorHandler = h.ErrorHandler
 
