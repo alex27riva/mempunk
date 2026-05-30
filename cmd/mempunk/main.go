@@ -78,6 +78,7 @@ func run() error {
 	e.GET("/static/*", staticHandler())
 
 	e.GET("/", h.Overview)
+	e.GET("/block/:id", h.Block)
 
 	log.Info("listening", "addr", cfg.Server.Listen)
 	return e.Start(cfg.Server.Listen)

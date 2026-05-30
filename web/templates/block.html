@@ -1,0 +1,115 @@
+{{ define "content" }}
+<div class="page-title">
+  <span class="mono">block</span>
+  <span class="mono">{{ .Data.Height }}</span>
+</div>
+
+<section>
+  <div class="detail-grid">
+    <div>
+      <span class="detail-label">hash</span>
+      <span class="detail-value">{{ .Data.Hash }}</span>
+    </div>
+    <div>
+      <span class="detail-label">height</span>
+      <span class="detail-value">{{ .Data.Height }}</span>
+    </div>
+    <div>
+      <span class="detail-label">time</span>
+      <span class="detail-value">{{ .Data.Age }}</span>
+    </div>
+    <div>
+      <span class="detail-label">confirmations</span>
+      <span class="detail-value mono">{{ .Data.Confirmations }}</span>
+    </div>
+    <div>
+      <span class="detail-label">transactions</span>
+      <span class="detail-value mono">{{ .Data.TxCount }}</span>
+    </div>
+    <div>
+      <span class="detail-label">size</span>
+      <span class="detail-value mono">{{ .Data.Size }} B</span>
+    </div>
+    <div>
+      <span class="detail-label">weight</span>
+      <span class="detail-value mono">{{ .Data.Weight }} WU</span>
+    </div>
+    <div>
+      <span class="detail-label">stripped size</span>
+      <span class="detail-value mono">{{ .Data.StrippedSize }} B</span>
+    </div>
+    <div>
+      <span class="detail-label">difficulty</span>
+      <span class="detail-value mono">{{ printf "%.2e" .Data.Difficulty }}</span>
+    </div>
+    <div>
+      <span class="detail-label">total fees</span>
+      <span class="detail-value mono">{{ btc .Data.TotalFeeSats }} BTC</span>
+    </div>
+    <div>
+      <span class="detail-label">avg fee rate</span>
+      <span class="detail-value mono">{{ .Data.AvgFeeRate }} sat/vB</span>
+    </div>
+    <div>
+      <span class="detail-label">version</span>
+      <span class="detail-value mono">{{ printf "0x%08x" .Data.Version }}</span>
+    </div>
+    <div>
+      <span class="detail-label">bits</span>
+      <span class="detail-value mono">{{ .Data.Bits }}</span>
+    </div>
+    <div>
+      <span class="detail-label">nonce</span>
+      <span class="detail-value mono">{{ .Data.Nonce }}</span>
+    </div>
+    <div>
+      <span class="detail-label">merkle root</span>
+      <span class="detail-value mono" style="word-break:break-all">{{ .Data.MerkleRoot }}</span>
+    </div>
+    {{ if .Data.PrevHash }}
+    <div>
+      <span class="detail-label">previous block</span>
+      <span class="detail-value mono">
+        <a href="/block/{{ .Data.PrevHash }}">{{ shortenHash .Data.PrevHash }}</a>
+      </span>
+    </div>
+    {{ end }}
+    {{ if .Data.NextHash }}
+    <div>
+      <span class="detail-label">next block</span>
+      <span class="detail-value mono">
+        <a href="/block/{{ .Data.NextHash }}">{{ shortenHash .Data.NextHash }}</a>
+      </span>
+    </div>
+    {{ end }}
+  </div>
+</section>
+
+<section>
+  <h2>transactions ({{ .Data.TxCount }})</h2>
+  {{ if .Data.Txs }}
+  <table>
+    <thead>
+      <tr>
+        <th>txid</th>
+        <th>vsize</th>
+        <th>weight</th>
+        <th>outputs</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Data.Txs }}
+      <tr>
+        <td class="mono hash"><a href="/tx/{{ .Txid }}">{{ .Txid }}</a></td>
+        <td class="mono">{{ .VSize }}</td>
+        <td class="mono">{{ .Weight }}</td>
+        <td class="mono">{{ len .Outputs }}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  {{ else }}
+  <p class="empty">tx details disabled — set explorer.block_tx_details: true to enable</p>
+  {{ end }}
+</section>
+{{ end }}
