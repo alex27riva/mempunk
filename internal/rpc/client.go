@@ -75,7 +75,7 @@ func (c *Client) do(ctx context.Context, hc *http.Client, method string, params 
 		params = []any{}
 	}
 	body, err := json.Marshal(rpcRequest{
-		JSONRPC: "1.1",
+		JSONRPC: "2.0",
 		ID:      1,
 		Method:  method,
 		Params:  params,
