@@ -80,6 +80,9 @@ func run() error {
 	e.GET("/", h.Overview)
 	e.GET("/block/:id", h.Block)
 	e.GET("/tx/:txid", h.Tx)
+	e.GET("/search", h.Search)
+
+	e.HTTPErrorHandler = h.ErrorHandler
 
 	log.Info("listening", "addr", cfg.Server.Listen)
 	return e.Start(cfg.Server.Listen)

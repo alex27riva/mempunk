@@ -302,6 +302,14 @@ details pre {
   padding: 1rem 0;
 }
 
+.error-msg {
+  color: var(--warn);
+  font-size: .9rem;
+  margin-bottom: 1.5rem;
+}
+
+.error-back { font-size: .84rem; }
+
 /* ── responsive ──────────────────────────────────────────────────────────── */
 
 @media (max-width: 640px) {

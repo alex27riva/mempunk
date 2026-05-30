@@ -1,0 +1,11 @@
+{{ define "content" }}
+<div class="page-title">
+  <span class="mono">{{ .Data.Code }}</span>
+  <span class="badge badge-warn">{{ .Title }}</span>
+</div>
+
+<section>
+  <p class="error-msg mono">{{ .Data.Message }}</p>
+  <p class="error-back"><a href="/">← back to overview</a></p>
+</section>
+{{ end }}
