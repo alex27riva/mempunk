@@ -1,0 +1,32 @@
+# mempunk configuration. Copy to config.yaml and edit.
+# Any field can be overridden with a MEMPUNK_* env var, e.g. MEMPUNK_RPC_PASSWORD.
+
+# Which Bitcoin network this instance serves. One of:
+#   mainnet | testnet3 | testnet4 | regtest
+# (Determines the default RPC port and address formats. testnet4 needs Core v28+.)
+network: mainnet
+
+rpc:
+  host: "127.0.0.1"
+  # port: optional. Omit to use the network default
+  #   mainnet 8332 | testnet3 18332 | testnet4 48332 | regtest 18443
+  # port: 8332
+
+  # Authentication: choose ONE method.
+  #   (a) user + password
+  user: "bitcoin"
+  password: "CHANGEME"
+  #   (b) cookie file (mutually exclusive with user/password):
+  # cookie_file: "/home/alex/.bitcoin/.cookie"
+
+server:
+  listen: "127.0.0.1:8080" # HTTP listen address; put behind nginx if exposed
+
+log:
+  level: "info" # debug | info | warn | error
+  format: "text" # text | json
+
+explorer:
+  latest_blocks: 12 # blocks shown on the overview
+  block_tx_details: true # load full tx details on block pages (slower)
+  cache_size: 1000 # LRU entries for immutable blocks/txs (0 disables sizing)
