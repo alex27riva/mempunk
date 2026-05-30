@@ -1,0 +1,80 @@
+{{ define "content" }}
+<div class="page-title">
+  <span class="mono">node info</span>
+  {{ if .Data.IBD }}<span class="badge badge-warn">syncing</span>{{ end }}
+</div>
+
+<section>
+  <h2>software</h2>
+  <div class="detail-grid">
+    <div>
+      <span class="detail-label">version</span>
+      <span class="detail-value mono">{{ .Data.VersionFmt }}</span>
+    </div>
+    <div>
+      <span class="detail-label">user agent</span>
+      <span class="detail-value mono">{{ .Data.Subversion }}</span>
+    </div>
+    <div>
+      <span class="detail-label">protocol</span>
+      <span class="detail-value mono">{{ .Data.ProtocolVersion }}</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>network</h2>
+  <div class="detail-grid">
+    <div>
+      <span class="detail-label">connections</span>
+      <span class="detail-value mono">{{ .Data.Connections }}</span>
+    </div>
+    <div>
+      <span class="detail-label">inbound</span>
+      <span class="detail-value mono">{{ .Data.ConnectionsIn }}</span>
+    </div>
+    <div>
+      <span class="detail-label">outbound</span>
+      <span class="detail-value mono">{{ .Data.ConnectionsOut }}</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>chain</h2>
+  <div class="detail-grid">
+    <div>
+      <span class="detail-label">network</span>
+      <span class="detail-value mono">{{ .Data.Chain }}</span>
+    </div>
+    <div>
+      <span class="detail-label">blocks</span>
+      <span class="detail-value mono">{{ .Data.Blocks }}</span>
+    </div>
+    <div>
+      <span class="detail-label">headers</span>
+      <span class="detail-value mono">{{ .Data.Headers }}</span>
+    </div>
+    <div>
+      <span class="detail-label">best block</span>
+      <span class="detail-value mono hash">
+        <a href="/block/{{ .Data.BestHash }}">{{ shortenHash .Data.BestHash }}</a>
+      </span>
+    </div>
+    <div>
+      <span class="detail-label">difficulty</span>
+      <span class="detail-value mono">{{ printf "%.2e" .Data.Difficulty }}</span>
+    </div>
+    <div>
+      <span class="detail-label">size on disk</span>
+      <span class="detail-value mono">{{ .Data.SizeFmt }}</span>
+    </div>
+    {{ if .Data.Pruned }}
+    <div>
+      <span class="detail-label">pruned</span>
+      <span class="detail-value"><span class="badge badge-warn">yes</span></span>
+    </div>
+    {{ end }}
+  </div>
+</section>
+{{ end }}
