@@ -1,5 +1,7 @@
 # ⚡ mempunk
 
+<img src="assets/logo.svg" alt="mempunk" width="320">
+
 A minimal, cyberpunk Bitcoin block explorer written in Go. Served directly from a Bitcoin Core full node over JSON-RPC. No database, no indexer, no JavaScript framework — just your node and a single static binary.
 
 ## Features

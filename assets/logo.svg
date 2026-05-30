@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 80" width="320" height="80">
+  <!-- background -->
+  <rect width="320" height="80" fill="#0a0e12" rx="4"/>
+
+  <!-- lightning bolt -->
+  <path d="M30 12L18 38h8L24 68l20-34H34L30 12z" fill="#00ff9c"/>
+
+  <!-- wordmark -->
+  <text x="62" y="36"
+        font-family="ui-monospace, 'JetBrains Mono', 'Cascadia Code', Menlo, monospace"
+        font-size="28" font-weight="700" letter-spacing="1"
+        fill="#c8d0d8">mem</text>
+  <text x="131" y="36"
+        font-family="ui-monospace, 'JetBrains Mono', 'Cascadia Code', Menlo, monospace"
+        font-size="28" font-weight="700" letter-spacing="1"
+        fill="#00ff9c">punk</text>
+
+  <!-- subtitle -->
+  <text x="62" y="56"
+        font-family="ui-monospace, 'JetBrains Mono', 'Cascadia Code', Menlo, monospace"
+        font-size="11" letter-spacing="2"
+        fill="#5a6a7a">BITCOIN BLOCK EXPLORER</text>
+</svg>
