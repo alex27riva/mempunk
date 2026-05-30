@@ -183,12 +183,16 @@ Minimal, fast, legible; no images except an inline SVG logo.
    verifies chain and warns on low version. Uses `"jsonrpc":"2.0"` (nodes reject
    "1.1"). `cmd/rpccheck/` is a throwaway connectivity tester. Tested with
    `httptest` mocks: success, RPC error, 401, chain mismatch, version warn.
-3. **`cache`** — NEXT. Bounded LRU keyed by hash for immutable objects. Unit-tested
-   eviction + hit/miss.
-4. **`explorer`** — typed view models (`OverviewVM`, `BlockVM`, `TxVM`,
-   `AddressVM`, `NodeVM`); all RPC orchestration, parallelism, fee math,
-   formatting. Tested with regtest or recorded JSON fixtures.
-5. **`render`** — custom Echo renderer + embedded templates + base layout +
+3. **`cache`** — ✅ DONE. Generic `Cache[V any]` backed by `container/list` +
+   `sync.Mutex`. capacity ≤ 0 disables. Tests: hit/miss, eviction order,
+   update-promotes-to-front, disabled, capacity-1.
+4. **`explorer`** — ✅ DONE. `internal/explorer/`: view models (`OverviewVM`,
+   `BlockVM`, `TxVM`, `AddressVM`, `NodeVM`), all RPC orchestration via errgroup
+   fan-out, fee math, formatting helpers (`BTCToSats`, `FormatBTC`, `FormatAge`,
+   `FormatSize`, `FormatVersion`). Cache keyed `"blk:<hash>"`, `"blkstats:<hash>"`,
+   `"tx:<txid>"` (confirmed only). `golang.org/x/sync` added for errgroup. Tested
+   with httptest mock dispatcher (8 tests).
+5. **`render`** — NEXT. Custom Echo renderer + embedded templates + base layout +
    stylesheet. Renders a styled static page end to end.
 6. **handlers, one view at a time** — overview → block → tx → search/404 → node →
    address basics → address scans.
