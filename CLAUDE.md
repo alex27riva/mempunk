@@ -178,14 +178,12 @@ Minimal, fast, legible; no images except an inline SVG logo.
 ## Component roadmap & status
 
 1. **`config`** — ✅ DONE. Canonical source at the end of this file; write verbatim.
-2. **`rpc`** — NEXT. Thin JSON-RPC client over `net/http`:
-   `Call(ctx, method, params...) (json.RawMessage, error)`, auth via
-   `config.ResolveAuth()` (re-read per call), timeouts (longer profile for
-   scans), slog. `Ping`/connectivity check that verifies `getblockchaininfo.chain
-   == cfg.Params().Chain` and warns if `getnetworkinfo.version <
-   MinCoreVersion`. Test against regtest or an `httptest` mock: success, error,
-   chain mismatch.
-3. **`cache`** — bounded LRU keyed by hash for immutable objects. Unit-tested
+2. **`rpc`** — ✅ DONE. `internal/rpc/`: `Client` with `Call` (30s) and `CallScan`
+   (5min), auth via `config.ResolveAuth()` per call, slog debug logging, `Ping`
+   verifies chain and warns on low version. Uses `"jsonrpc":"2.0"` (nodes reject
+   "1.1"). `cmd/rpccheck/` is a throwaway connectivity tester. Tested with
+   `httptest` mocks: success, RPC error, 401, chain mismatch, version warn.
+3. **`cache`** — NEXT. Bounded LRU keyed by hash for immutable objects. Unit-tested
    eviction + hit/miss.
 4. **`explorer`** — typed view models (`OverviewVM`, `BlockVM`, `TxVM`,
    `AddressVM`, `NodeVM`); all RPC orchestration, parallelism, fee math,
