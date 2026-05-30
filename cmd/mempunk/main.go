@@ -79,6 +79,7 @@ func run() error {
 
 	e.GET("/", h.Overview)
 	e.GET("/block/:id", h.Block)
+	e.GET("/tx/:txid", h.Tx)
 
 	log.Info("listening", "addr", cfg.Server.Listen)
 	return e.Start(cfg.Server.Listen)

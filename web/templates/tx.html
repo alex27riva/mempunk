@@ -1,0 +1,161 @@
+{{ define "content" }}
+<div class="page-title">
+  <span class="mono">transaction</span>
+  {{ if .Data.Confirmed }}
+    <span class="badge badge-green">confirmed</span>
+  {{ else }}
+    <span class="badge badge-warn">mempool</span>
+  {{ end }}
+  {{ if .Data.Coinbase }}
+    <span class="badge badge-cyan">coinbase</span>
+  {{ end }}
+</div>
+
+<section>
+  <div class="detail-grid">
+    <div>
+      <span class="detail-label">txid</span>
+      <span class="detail-value mono" style="word-break:break-all">{{ .Data.Txid }}</span>
+    </div>
+    {{ if .Data.Confirmed }}
+    <div>
+      <span class="detail-label">block</span>
+      <span class="detail-value mono">
+        <a href="/block/{{ .Data.BlockHash }}">{{ shortenHash .Data.BlockHash }}</a>
+      </span>
+    </div>
+    <div>
+      <span class="detail-label">confirmations</span>
+      <span class="detail-value mono">{{ .Data.Confirmations }}</span>
+    </div>
+    <div>
+      <span class="detail-label">age</span>
+      <span class="detail-value mono">{{ .Data.Age }}</span>
+    </div>
+    {{ end }}
+    <div>
+      <span class="detail-label">size</span>
+      <span class="detail-value mono">{{ .Data.Size }} B</span>
+    </div>
+    <div>
+      <span class="detail-label">vsize</span>
+      <span class="detail-value mono">{{ .Data.VSize }} vB</span>
+    </div>
+    <div>
+      <span class="detail-label">weight</span>
+      <span class="detail-value mono">{{ .Data.Weight }} WU</span>
+    </div>
+    <div>
+      <span class="detail-label">version</span>
+      <span class="detail-value mono">{{ .Data.Version }}</span>
+    </div>
+    <div>
+      <span class="detail-label">locktime</span>
+      <span class="detail-value mono">{{ .Data.LockTime }}</span>
+    </div>
+    {{ if not .Data.Coinbase }}
+    <div>
+      <span class="detail-label">total in</span>
+      <span class="detail-value mono">{{ btc .Data.TotalIn }} BTC</span>
+    </div>
+    <div>
+      <span class="detail-label">total out</span>
+      <span class="detail-value mono">{{ btc .Data.TotalOut }} BTC</span>
+    </div>
+    <div>
+      <span class="detail-label">fee</span>
+      <span class="detail-value mono">{{ btc .Data.Fee }} BTC</span>
+    </div>
+    <div>
+      <span class="detail-label">fee rate</span>
+      <span class="detail-value mono">{{ printf "%.2f" .Data.FeeRate }} sat/vB</span>
+    </div>
+    {{ end }}
+  </div>
+</section>
+
+<section class="txio-section">
+  <h2>inputs ({{ len .Data.Inputs }})</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>outpoint</th>
+        <th>address</th>
+        <th>type</th>
+        <th>value</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Data.Inputs }}
+      <tr>
+        <td class="mono">{{ .Index }}</td>
+        <td class="mono hash">
+          {{ if .IsCoinbase }}
+            <span class="badge badge-cyan">coinbase</span>
+          {{ else }}
+            <a href="/tx/{{ .Txid }}">{{ shortenHash .Txid }}</a>:{{ .Vout }}
+          {{ end }}
+        </td>
+        <td class="mono hash">
+          {{ if .Address }}
+            <a href="/address/{{ .Address }}">{{ .Address }}</a>
+          {{ else }}
+            <span class="text-dim">—</span>
+          {{ end }}
+        </td>
+        <td class="mono">{{ .ScriptType }}</td>
+        <td class="mono">
+          {{ if .IsCoinbase }}—{{ else }}{{ btc .ValueSats }}{{ end }}
+        </td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</section>
+
+<section class="txio-section">
+  <h2>outputs ({{ len .Data.Outputs }})</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>address</th>
+        <th>type</th>
+        <th>value</th>
+        <th>status</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Data.Outputs }}
+      <tr>
+        <td class="mono">{{ .Index }}</td>
+        <td class="mono hash">
+          {{ if .Address }}
+            <a href="/address/{{ .Address }}">{{ .Address }}</a>
+          {{ else }}
+            <span class="text-dim">—</span>
+          {{ end }}
+        </td>
+        <td class="mono">{{ .ScriptType }}</td>
+        <td class="mono">{{ btc .ValueSats }}</td>
+        <td>
+          {{ if .Spent }}
+            <span class="spent">spent</span>
+          {{ else }}
+            <span class="unspent">unspent</span>
+          {{ end }}
+        </td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</section>
+
+{{ if .Data.RawJSON }}
+<details>
+  <summary>raw json</summary>
+  <pre>{{ .Data.RawJSON }}</pre>
+</details>
+{{ end }}
+{{ end }}
