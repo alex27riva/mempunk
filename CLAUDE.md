@@ -199,10 +199,19 @@ Minimal, fast, legible; no images except an inline SVG logo.
    `overview.html` = first styled page. `style.css` = cyberpunk palette with CSS
    vars, per-network accent, stat cards, tables, details/raw JSON. 3 tests pass.
 6. **`handlers`** — IN PROGRESS. `internal/handlers/`: `Handlers` struct, `New`,
-   `page` helper, `httpError`. `cmd/mempunk/main.go`: entrypoint wiring config →
-   logger → rpc.Ping → cache → explorer → renderer → Echo (recover, request-log,
-   static, routes). `GET /` overview done and tested against live node.
-   Remaining: block → tx → search/404 → node → address basics → address scans.
+   `page` helper, `httpError`, custom `ErrorHandler` (styled error.html).
+   `cmd/mempunk/main.go`: entrypoint wiring config → logger → rpc.Ping → cache →
+   explorer → renderer → Echo (recover, request-log, static, routes).
+   `internal/explorer/search.go`: `ProbeHex` (getblockheader → getrawtransaction).
+   Routes done: `GET /` (overview), `GET /block/:id`, `GET /tx/:txid`,
+   `GET /search`, `GET /node`, `GET /address/:addr`.
+   Templates done: overview, block, tx, node, address, error.
+   **Remaining: address scans only.**
+   - `GET /address/:addr/utxos` — `scantxoutset` start/poll, meta-refresh progress
+     page, CSS bar, result page. Needs `Explorer.ScanUTXO` method.
+   - `GET /address/:addr/history` — `scanblocks` + fetch matched blocks, ledger
+     of received/spent. Disable gracefully if `blockfilterindex` off. Needs
+     `Explorer.ScanHistory` method.
 
 ## Conventions
 
