@@ -1,0 +1,73 @@
+{{ define "head" }}
+{{ if .Data.Scanning }}
+<meta http-equiv="refresh" content="2; url=/address/{{ .Data.Addr }}/history">
+{{ end }}
+{{ end }}
+
+{{ define "content" }}
+<div class="page-title">
+  <span class="mono">tx history</span>
+  <span class="mono hash">{{ .Data.Addr }}</span>
+</div>
+
+{{ if .Data.Scanning }}
+<section>
+  <p style="margin-bottom:.75rem;color:var(--text-dim);font-size:.84rem">scanning block filters…</p>
+  <div class="progress-bar">
+    <div class="progress-bar-fill" style="width:5%"></div>
+  </div>
+</section>
+
+{{ else if .Data.NoIndex }}
+<section>
+  <p class="empty">block filter index not available on this node</p>
+  <p style="margin-top:.5rem;font-size:.8rem;color:var(--text-dim)">
+    add <span class="mono">blockfilterindex=1</span> to bitcoin.conf and reindex
+  </p>
+  <p style="margin-top:.75rem"><a href="/address/{{ .Data.Addr }}">← back to address</a></p>
+</section>
+
+{{ else if .Data.ErrMsg }}
+<section>
+  <p class="error-msg mono">{{ .Data.ErrMsg }}</p>
+  <p class="error-back"><a href="/address/{{ .Data.Addr }}">← back to address</a></p>
+</section>
+
+{{ else if .Data.Txs }}
+<section>
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-label">transactions found</span>
+      <span class="stat-value mono">{{ len .Data.Txs }}</span>
+    </div>
+  </div>
+  <h2>transactions</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>txid</th>
+        <th>block</th>
+        <th>height</th>
+        <th>age</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Data.Txs }}
+      <tr>
+        <td class="mono hash"><a href="/tx/{{ .Txid }}">{{ .Txid }}</a></td>
+        <td class="mono hash"><a href="/block/{{ .BlockHash }}">{{ shortenHash .BlockHash }}</a></td>
+        <td class="mono">{{ .Height }}</td>
+        <td>{{ .Age }}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+</section>
+
+{{ else }}
+<section>
+  <p class="empty">no transactions found for this address</p>
+  <p style="margin-top:.75rem"><a href="/address/{{ .Data.Addr }}">← back to address</a></p>
+</section>
+{{ end }}
+{{ end }}

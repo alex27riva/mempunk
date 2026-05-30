@@ -6,11 +6,21 @@ import (
 	"encoding/json"
 	"fmt"
 	"log/slog"
+	"sync"
 
 	"github.com/alex27riva/mempunk/internal/cache"
 	"github.com/alex27riva/mempunk/internal/config"
 	"github.com/alex27riva/mempunk/internal/rpc"
 )
+
+// scanJob holds the state of a background scan goroutine.
+// Explorer has one slot per scan type; only one scan of each type runs at a time.
+type scanJob[V any] struct {
+	addr string
+	done bool
+	val  V
+	err  error
+}
 
 // Explorer orchestrates RPC calls and builds view models for HTTP handlers.
 type Explorer struct {
@@ -18,6 +28,11 @@ type Explorer struct {
 	cache *cache.Cache[json.RawMessage]
 	cfg   *config.Config
 	log   *slog.Logger
+
+	utxoMu  sync.Mutex
+	utxoJob *scanJob[*UTXOScanVM]
+	histMu  sync.Mutex
+	histJob *scanJob[*HistoryScanVM]
 }
 
 // New creates an Explorer. All parameters are required.

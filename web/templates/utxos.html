@@ -1,0 +1,78 @@
+{{ define "head" }}
+{{ if .Data.Scanning }}
+<meta http-equiv="refresh" content="2; url=/address/{{ .Data.Addr }}/utxos">
+{{ end }}
+{{ end }}
+
+{{ define "content" }}
+<div class="page-title">
+  <span class="mono">UTXO scan</span>
+  <span class="mono hash">{{ .Data.Addr }}</span>
+</div>
+
+{{ if .Data.BusyAddr }}
+<section>
+  <p class="empty">scan in progress for another address (<span class="mono">{{ .Data.BusyAddr }}</span>) — try again shortly</p>
+  <p style="margin-top:.75rem"><a href="/address/{{ .Data.Addr }}">← back to address</a></p>
+</section>
+
+{{ else if .Data.Scanning }}
+<section>
+  <p style="margin-bottom:.75rem;color:var(--text-dim);font-size:.84rem">scanning UTXO set…</p>
+  <div class="progress-bar">
+    <div class="progress-bar-fill" style="width:{{ if .Data.Progress }}{{ pct .Data.Progress }}{{ else }}5%{{ end }}"></div>
+  </div>
+  {{ if .Data.Progress }}
+  <p style="font-family:var(--mono);font-size:.76rem;color:var(--text-dim);margin-top:.4rem">{{ pct .Data.Progress }}</p>
+  {{ end }}
+</section>
+
+{{ else if .Data.ErrMsg }}
+<section>
+  <p class="error-msg mono">{{ .Data.ErrMsg }}</p>
+  <p class="error-back"><a href="/address/{{ .Data.Addr }}">← back to address</a></p>
+</section>
+
+{{ else }}
+<section>
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-label">UTXOs found</span>
+      <span class="stat-value mono">{{ len .Data.UTXOs }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">total balance</span>
+      <span class="stat-value mono">{{ btc .Data.TotalSats }} BTC</span>
+    </div>
+  </div>
+</section>
+
+{{ if .Data.UTXOs }}
+<section>
+  <h2>unspent outputs</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>txid</th>
+        <th>vout</th>
+        <th>height</th>
+        <th>amount</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Data.UTXOs }}
+      <tr>
+        <td class="mono hash"><a href="/tx/{{ .Txid }}">{{ .Txid }}</a></td>
+        <td class="mono">{{ .Vout }}</td>
+        <td class="mono">{{ .Height }}</td>
+        <td class="mono unspent">{{ .AmtBTC }}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+{{ else }}
+  <section><p class="empty">no unspent outputs found</p></section>
+{{ end }}
+
+{{ end }}
+{{ end }}

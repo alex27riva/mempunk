@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>{{ .Title }} — mempunk</title>
   <link rel="stylesheet" href="/static/style.css">
+  {{ block "head" . }}{{ end }}
 </head>
 <body class="{{ .AccentClass }}">
 

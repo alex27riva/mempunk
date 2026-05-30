@@ -66,6 +66,7 @@ func funcMap() template.FuncMap {
 		"btc":         formatBTC,
 		"shortenHash": shortenHash,
 		"add":         func(a, b int) int { return a + b },
+		"pct":         func(v float64) string { return fmt.Sprintf("%.0f%%", v*100) },
 		// not is needed because html/template has no built-in negation of values.
 		"not": func(v any) bool {
 			if v == nil {
