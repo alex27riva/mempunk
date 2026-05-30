@@ -10,7 +10,7 @@ import (
 func (h *Handlers) Address(c echo.Context) error {
 	addr := c.Param("addr")
 	if err := validateAddr(addr); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return err
 	}
 
 	vm, err := h.ex.BuildAddress(c.Request().Context(), addr)

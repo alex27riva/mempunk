@@ -11,7 +11,7 @@ import (
 func (h *Handlers) Block(c echo.Context) error {
 	id := c.Param("id")
 	if err := validateBlockID(id); err != nil {
-		return echo.NewHTTPError(http.StatusBadRequest, err.Error())
+		return err
 	}
 
 	vm, err := h.ex.BuildBlock(c.Request().Context(), id)
