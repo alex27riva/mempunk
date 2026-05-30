@@ -198,20 +198,19 @@ Minimal, fast, legible; no images except an inline SVG logo.
    `add`, `not`). `base.html` = full layout (SVG logo, net badge, search, footer).
    `overview.html` = first styled page. `style.css` = cyberpunk palette with CSS
    vars, per-network accent, stat cards, tables, details/raw JSON. 3 tests pass.
-6. **`handlers`** — IN PROGRESS. `internal/handlers/`: `Handlers` struct, `New`,
-   `page` helper, `httpError`, custom `ErrorHandler` (styled error.html).
-   `cmd/mempunk/main.go`: entrypoint wiring config → logger → rpc.Ping → cache →
-   explorer → renderer → Echo (recover, request-log, static, routes).
-   `internal/explorer/search.go`: `ProbeHex` (getblockheader → getrawtransaction).
-   Routes done: `GET /` (overview), `GET /block/:id`, `GET /tx/:txid`,
-   `GET /search`, `GET /node`, `GET /address/:addr`.
-   Templates done: overview, block, tx, node, address, error.
-   **Remaining: address scans only.**
-   - `GET /address/:addr/utxos` — `scantxoutset` start/poll, meta-refresh progress
-     page, CSS bar, result page. Needs `Explorer.ScanUTXO` method.
-   - `GET /address/:addr/history` — `scanblocks` + fetch matched blocks, ledger
-     of received/spent. Disable gracefully if `blockfilterindex` off. Needs
-     `Explorer.ScanHistory` method.
+6. **`handlers`** — ✅ DONE. `internal/handlers/`: `Handlers`, `New`, `page`,
+   `httpError`, custom `ErrorHandler`. `cmd/mempunk/main.go`: full entrypoint.
+   `internal/explorer/search.go`: `ProbeHex`. `internal/explorer/scan_utxo.go`:
+   `UTXOScanVM`, `PollUTXOScan`, background `runUTXOScan`, status pre-check to
+   handle Core restarts; progress normalized 0–1 (Core returns 0–100).
+   `internal/explorer/scan_history.go`: `HistoryScanVM`, `PollHistoryScan`,
+   background `doHistoryScan` (scanblocks + bounded errgroup getblock v2);
+   graceful NoIndex message when blockfilterindex disabled.
+   Explorer: `scanJob[V]` generic, `utxoJob`/`histJob` fields.
+   render: `pct` func. base.html: `{{block "head"}}` for meta-refresh injection.
+   All routes live: `/`, `/block/:id`, `/tx/:txid`, `/search`, `/node`,
+   `/address/:addr`, `/address/:addr/utxos`, `/address/:addr/history`, `/static/*`.
+   Templates: overview, block, tx, node, address, utxos, history, error.
 
 ## Conventions
 
