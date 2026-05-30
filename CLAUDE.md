@@ -192,10 +192,14 @@ Minimal, fast, legible; no images except an inline SVG logo.
    `FormatSize`, `FormatVersion`). Cache keyed `"blk:<hash>"`, `"blkstats:<hash>"`,
    `"tx:<txid>"` (confirmed only). `golang.org/x/sync` added for errgroup. Tested
    with httptest mock dispatcher (8 tests).
-5. **`render`** — NEXT. Custom Echo renderer + embedded templates + base layout +
-   stylesheet. Renders a styled static page end to end.
-6. **handlers, one view at a time** — overview → block → tx → search/404 → node →
-   address basics → address scans.
+5. **`render`** — ✅ DONE. `web/` holds `//go:embed templates static; var FS embed.FS`.
+   `internal/render/`: `Renderer` (implements `echo.Renderer`), `Page` struct,
+   `New(fs.FS)` auto-discovers page templates, `funcMap` (`btc`, `shortenHash`,
+   `add`, `not`). `base.html` = full layout (SVG logo, net badge, search, footer).
+   `overview.html` = first styled page. `style.css` = cyberpunk palette with CSS
+   vars, per-network accent, stat cards, tables, details/raw JSON. 3 tests pass.
+6. **`handlers`** — NEXT. One view at a time: overview → block → tx → search/404 →
+   node → address basics → address scans.
 
 ## Conventions
 

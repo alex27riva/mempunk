@@ -1,0 +1,36 @@
+{{ define "base" }}<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{{ .Title }} — mempunk</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body class="{{ .AccentClass }}">
+
+<header class="site-header">
+  <a class="logo" href="/">
+    <svg viewBox="0 0 10 18" width="10" height="18" fill="currentColor" aria-hidden="true">
+      <path d="M6 0L0 10h4L3 18l7-10H6L6 0z"/>
+    </svg>
+    mempunk
+  </a>
+  <span class="net-badge">{{ .Network }}</span>
+  <form class="search" action="/search" method="get" role="search">
+    <input name="q" type="search"
+           placeholder="height · hash · txid · address"
+           autocomplete="off" spellcheck="false">
+  </form>
+</header>
+
+<main>
+  {{ block "content" . }}{{ end }}
+</main>
+
+<footer class="site-footer">
+  mempunk &middot; <a href="/node">node info</a>
+</footer>
+
+</body>
+</html>
+{{ end }}

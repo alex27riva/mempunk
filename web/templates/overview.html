@@ -1,0 +1,58 @@
+{{ define "content" }}
+<div class="page-title">
+  <span class="mono">{{ .Data.Chain }}</span> overview
+  {{ if .Data.IBD }}<span class="badge badge-warn">syncing</span>{{ end }}
+</div>
+
+<section>
+  <div class="stats-row">
+    <div class="stat-card">
+      <span class="stat-label">best height</span>
+      <span class="stat-value mono">{{ .Data.Blocks }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">headers</span>
+      <span class="stat-value mono">{{ .Data.Headers }}</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">best block</span>
+      <span class="stat-value mono hash">
+        <a href="/block/{{ .Data.BestHash }}">{{ .Data.BestHash }}</a>
+      </span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-label">difficulty</span>
+      <span class="stat-value mono">{{ printf "%.2e" .Data.Difficulty }}</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <h2>recent blocks</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>height</th>
+        <th>hash</th>
+        <th>age</th>
+        <th>txs</th>
+        <th>size</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{ range .Data.RecentBlocks }}
+      <tr>
+        <td class="mono"><a href="/block/{{ .Height }}">{{ .Height }}</a></td>
+        <td class="mono hash"><a href="/block/{{ .Hash }}">{{ .Hash }}</a></td>
+        <td>{{ .Age }}</td>
+        <td class="mono">{{ .TxCount }}</td>
+        <td class="mono">{{ .SizeFmt }}</td>
+      </tr>
+      {{ end }}
+    </tbody>
+  </table>
+  {{ if not .Data.RecentBlocks }}
+  <p class="empty">no blocks</p>
+  {{ end }}
+</section>
+{{ end }}
