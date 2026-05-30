@@ -198,8 +198,11 @@ Minimal, fast, legible; no images except an inline SVG logo.
    `add`, `not`). `base.html` = full layout (SVG logo, net badge, search, footer).
    `overview.html` = first styled page. `style.css` = cyberpunk palette with CSS
    vars, per-network accent, stat cards, tables, details/raw JSON. 3 tests pass.
-6. **`handlers`** — NEXT. One view at a time: overview → block → tx → search/404 →
-   node → address basics → address scans.
+6. **`handlers`** — IN PROGRESS. `internal/handlers/`: `Handlers` struct, `New`,
+   `page` helper, `httpError`. `cmd/mempunk/main.go`: entrypoint wiring config →
+   logger → rpc.Ping → cache → explorer → renderer → Echo (recover, request-log,
+   static, routes). `GET /` overview done and tested against live node.
+   Remaining: block → tx → search/404 → node → address basics → address scans.
 
 ## Conventions
 
