@@ -1,12 +1,14 @@
 BINARY  := mempunk
 CMD     := ./cmd/mempunk
+OUT     := build/$(BINARY)
 VERSION := $(shell git describe --tags --always --dirty 2>/dev/null || echo "dev")
-LDFLAGS := -ldflags "-X main.version=$(VERSION)"
+LDFLAGS := -ldflags "-s -w -X main.version=$(VERSION)"
 
 .PHONY: build test vet clean install
 
 build:
-	go build $(LDFLAGS) -o $(BINARY) $(CMD)
+	mkdir -p build
+	go build $(LDFLAGS) -o $(OUT) $(CMD)
 
 test:
 	go test ./...
@@ -15,8 +17,8 @@ vet:
 	go vet ./...
 
 clean:
-	rm -f $(BINARY)
+	rm -rf build/
 
 install: build
-	sudo cp $(BINARY) /home/mempunk/$(BINARY)
+	sudo cp $(OUT) /home/mempunk/$(BINARY)
 	sudo chown mempunk:mempunk /home/mempunk/$(BINARY)
