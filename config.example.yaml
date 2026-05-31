@@ -17,10 +17,10 @@ rpc:
   user: "bitcoin"
   password: "CHANGEME"
   #   (b) cookie file (mutually exclusive with user/password):
-  # cookie_file: "/home/alex/.bitcoin/.cookie"
+  # cookie_file: "/home/bitcoin/.bitcoin/.cookie"
 
 server:
-  listen: "127.0.0.1:8080" # HTTP listen address; put behind nginx if exposed
+  listen: "0.0.0.0:2100" # HTTP listen address; put behind nginx if exposed
 
 log:
   level: "info" # debug | info | warn | error

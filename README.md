@@ -65,7 +65,7 @@ rpc:
   user: "bitcoin"
   password: "your-rpc-password"
   # or cookie auth:
-  # cookie_file: "/home/user/.bitcoin/.cookie"
+  # cookie_file: "/home/bitcoin/.bitcoin/.cookie"
 
 server:
   listen: "127.0.0.1:8080"
@@ -86,7 +86,7 @@ MEMPUNK_RPC_PASSWORD=secret MEMPUNK_LOG_LEVEL=debug ./mempunk
 | `rpc.port` | network default | 8332 / 18332 / 48332 / 18443 |
 | `rpc.user` / `rpc.password` | — | RPC auth (mutually exclusive with cookie) |
 | `rpc.cookie_file` | — | Path to `.cookie` file |
-| `server.listen` | `127.0.0.1:8080` | HTTP listen address |
+| `server.listen` | `0.0.0.0:2100` | HTTP listen address |
 | `log.level` | `info` | `debug` \| `info` \| `warn` \| `error` |
 | `log.format` | `text` | `text` \| `json` |
 | `explorer.latest_blocks` | `12` | Blocks shown on the overview page |
@@ -128,8 +128,8 @@ Wants=bitcoind.service
 [Service]
 Type=simple
 User=mempunk
-WorkingDirectory=/opt/mempunk
-ExecStart=/opt/mempunk/mempunk
+WorkingDirectory=/home/mempunk
+ExecStart=/home/mempunk/mempunk
 Restart=on-failure
 RestartSec=5
 
@@ -140,14 +140,13 @@ WantedBy=multi-user.target
 Install and start:
 
 ```sh
-# create dedicated user
-sudo useradd -r -s /sbin/nologin mempunk
+# create dedicated user with home directory (matches RaspiBlitz conventions)
+sudo useradd -m -s /usr/sbin/nologin mempunk
 
 # install binary and config
-sudo mkdir -p /opt/mempunk
-sudo cp mempunk /opt/mempunk/
-sudo cp config.yaml /opt/mempunk/
-sudo chown -R mempunk:mempunk /opt/mempunk
+sudo cp mempunk /home/mempunk/
+sudo cp config.yaml /home/mempunk/
+sudo chown -R mempunk:mempunk /home/mempunk
 
 # enable and start
 sudo systemctl daemon-reload
@@ -157,10 +156,21 @@ sudo systemctl enable --now mempunk
 sudo journalctl -u mempunk -f
 ```
 
-If using cookie auth, grant the `mempunk` user read access to `.cookie`:
+Open the firewall port:
 
 ```sh
-sudo usermod -aG bitcoin mempunk   # adjust group to match your bitcoind user
+sudo ufw allow 2100 comment "mempunk HTTP"
+```
+
+If using cookie auth (recommended on RaspiBlitz), grant read access to `.cookie` and set the path in `config.yaml`:
+
+```sh
+sudo usermod -aG bitcoin mempunk
+```
+
+```yaml
+rpc:
+  cookie_file: "/home/bitcoin/.bitcoin/.cookie"
 ```
 
 ## bitcoin.conf
