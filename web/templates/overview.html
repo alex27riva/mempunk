@@ -17,7 +17,7 @@
     <div class="stat-card">
       <span class="stat-label">best block</span>
       <span class="stat-value mono hash">
-        <a href="/block/{{ .Data.BestHash }}">{{ .Data.BestHash }}</a>
+        <a href="/block/{{ .Data.BestHash }}">{{ shortenHash .Data.BestHash }}</a>
       </span>
     </div>
     <div class="stat-card">
