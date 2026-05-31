@@ -37,13 +37,20 @@ A minimal, cyberpunk Bitcoin block explorer written in Go. Served directly from 
 ```sh
 git clone https://github.com/alex27riva/mempunk
 cd mempunk
-go build -o mempunk ./cmd/mempunk
+make build
 ```
 
-To embed a version string (shown in the footer):
+The version is read automatically from the current git tag (`git describe --tags --always`). Tag a release before building:
 
 ```sh
-go build -ldflags "-X main.version=v1.0.0" -o mempunk ./cmd/mempunk
+git tag v1.0.0
+make build   # embeds "v1.0.0" in the binary
+```
+
+Without `make`, or on systems without `make` installed:
+
+```sh
+go build -ldflags "-X main.version=$(git describe --tags --always)" -o mempunk ./cmd/mempunk
 ```
 
 The binary embeds all templates and the stylesheet; no extra files needed at runtime.
