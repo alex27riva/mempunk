@@ -29,4 +29,5 @@ log:
 explorer:
   latest_blocks: 12 # blocks shown on the overview
   block_tx_details: true # load full tx details on block pages (slower)
+  block_tx_page_size: 200 # initial txs shown per block; "load more" link doubles it (0 = default 200)
   cache_size: 1000 # LRU entries for immutable blocks/txs (0 disables sizing)

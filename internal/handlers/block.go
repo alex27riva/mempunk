@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 
 	"github.com/labstack/echo/v4"
@@ -14,7 +15,16 @@ func (h *Handlers) Block(c echo.Context) error {
 		return err
 	}
 
-	vm, err := h.ex.BuildBlock(c.Request().Context(), id)
+	limit := h.cfg.Explorer.TxPageSize()
+	if raw := c.QueryParam("txlimit"); raw != "" {
+		n, err := strconv.Atoi(raw)
+		if err != nil || n < 1 {
+			return echo.NewHTTPError(http.StatusBadRequest, "txlimit must be a positive integer")
+		}
+		limit = n
+	}
+
+	vm, err := h.ex.BuildBlock(c.Request().Context(), id, limit)
 	if err != nil {
 		h.log.Error("BuildBlock", "id", id, "err", err)
 		return httpError(err)

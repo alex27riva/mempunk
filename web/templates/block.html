@@ -108,6 +108,14 @@
       {{ end }}
     </tbody>
   </table>
+  {{ if .Data.HasMoreTxs }}
+  <p class="load-more">
+    showing {{ .Data.TxShown }} of {{ .Data.TxCount }} transactions —
+    <a href="/block/{{ .Data.Hash }}?txlimit={{ add .Data.TxShown .Data.TxShown }}">load {{ .Data.TxShown }} more</a>
+    &nbsp;·&nbsp;
+    <a href="/block/{{ .Data.Hash }}?txlimit={{ .Data.TxCount }}">show all {{ .Data.TxCount }}</a>
+  </p>
+  {{ end }}
   {{ else }}
   <p class="empty">tx details disabled — set explorer.block_tx_details: true to enable</p>
   {{ end }}

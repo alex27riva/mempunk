@@ -121,15 +121,24 @@ type LogConfig struct {
 }
 
 type ExplorerConfig struct {
-	LatestBlocks   int   `yaml:"latest_blocks"`
-	BlockTxDetails *bool `yaml:"block_tx_details"` // pointer so default can be true
-	CacheSize      int   `yaml:"cache_size"`
+	LatestBlocks    int   `yaml:"latest_blocks"`
+	BlockTxDetails  *bool `yaml:"block_tx_details"` // pointer so default can be true
+	BlockTxPageSize int   `yaml:"block_tx_page_size"`
+	CacheSize       int   `yaml:"cache_size"`
 }
 
 // ShowTxDetails reports whether block views should load full tx details.
 // Defaults to true when unset.
 func (e ExplorerConfig) ShowTxDetails() bool {
 	return e.BlockTxDetails == nil || *e.BlockTxDetails
+}
+
+// TxPageSize returns the max transactions shown per block page. Defaults to 200.
+func (e ExplorerConfig) TxPageSize() int {
+	if e.BlockTxPageSize > 0 {
+		return e.BlockTxPageSize
+	}
+	return 200
 }
 
 // Params returns the resolved network parameters. Safe to call after Validate
@@ -231,6 +240,13 @@ func (c *Config) applyEnv() error {
 		}
 		c.Explorer.BlockTxDetails = &b
 	}
+	if v, ok := os.LookupEnv("MEMPUNK_EXPLORER_BLOCK_TX_PAGE_SIZE"); ok {
+		n, err := strconv.Atoi(v)
+		if err != nil {
+			return fmt.Errorf("MEMPUNK_EXPLORER_BLOCK_TX_PAGE_SIZE: %w", err)
+		}
+		c.Explorer.BlockTxPageSize = n
+	}
 	return nil
 }
 
@@ -316,6 +332,9 @@ func (c *Config) Validate() error {
 	if c.Explorer.CacheSize < 0 {
 		return fmt.Errorf("explorer.cache_size must be >= 0, got %d", c.Explorer.CacheSize)
 	}
+	if c.Explorer.BlockTxPageSize < 0 {
+		return fmt.Errorf("explorer.block_tx_page_size must be >= 0, got %d", c.Explorer.BlockTxPageSize)
+	}
 	return nil
 }
 
@@ -331,6 +350,7 @@ func (c Config) LogValue() slog.Value {
 		slog.String("log_format", c.Log.Format),
 		slog.Int("latest_blocks", c.Explorer.LatestBlocks),
 		slog.Bool("block_tx_details", c.Explorer.ShowTxDetails()),
+		slog.Int("block_tx_page_size", c.Explorer.TxPageSize()),
 		slog.Int("cache_size", c.Explorer.CacheSize),
 	}
 	if c.AuthMethod() == "userpass" {

@@ -240,7 +240,7 @@ func TestBuildBlock(t *testing.T) {
 	m.queue("getblock", fixBlockV2)
 	m.queue("getblockstats", fixBlockStats)
 
-	vm, err := ex.BuildBlock(context.Background(), fixBlockHash)
+	vm, err := ex.BuildBlock(context.Background(), fixBlockHash, 0)
 	if err != nil {
 		t.Fatalf("BuildBlock: %v", err)
 	}
@@ -261,7 +261,7 @@ func TestBuildBlockByHeight(t *testing.T) {
 	m.queue("getblock", fixBlockV2)
 	m.queue("getblockstats", fixBlockStats)
 
-	vm, err := ex.BuildBlock(context.Background(), "100")
+	vm, err := ex.BuildBlock(context.Background(), "100", 0)
 	if err != nil {
 		t.Fatalf("BuildBlock by height: %v", err)
 	}

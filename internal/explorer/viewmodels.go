@@ -44,7 +44,9 @@ type BlockVM struct {
 	TotalFeeSats  int64
 	TotalFeeBTC   string
 	AvgFeeRate    int64
-	Txs           []TxSummaryVM // nil when ShowTxDetails is false
+	Txs           []TxSummaryVM // nil when ShowTxDetails is false; capped to TxShown
+	TxShown       int           // number of txs included in Txs
+	HasMoreTxs    bool          // true when TxCount > TxShown
 }
 
 // TxSummaryVM is a row in the block transaction list.

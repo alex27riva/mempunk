@@ -10,7 +10,8 @@ import (
 )
 
 // BuildBlock fetches a block by hash or decimal height and builds a BlockVM.
-func (e *Explorer) BuildBlock(ctx context.Context, id string) (*BlockVM, error) {
+// limit caps how many transactions are included in vm.Txs (0 = no cap).
+func (e *Explorer) BuildBlock(ctx context.Context, id string, limit int) (*BlockVM, error) {
 	hash, err := e.resolveBlockID(ctx, id)
 	if err != nil {
 		return nil, err
@@ -71,8 +72,14 @@ func (e *Explorer) BuildBlock(ctx context.Context, id string) (*BlockVM, error) 
 	}
 
 	if e.cfg.Explorer.ShowTxDetails() {
-		vm.Txs = make([]TxSummaryVM, len(b.Tx))
-		for i, tx := range b.Tx {
+		total := len(b.Tx)
+		shown := total
+		if limit > 0 && limit < total {
+			shown = limit
+		}
+		vm.Txs = make([]TxSummaryVM, shown)
+		for i := 0; i < shown; i++ {
+			tx := b.Tx[i]
 			outs := make([]OutputVM, len(tx.Vout))
 			for j, vout := range tx.Vout {
 				sats := BTCToSats(vout.Value)
@@ -91,6 +98,8 @@ func (e *Explorer) BuildBlock(ctx context.Context, id string) (*BlockVM, error) 
 				Outputs: outs,
 			}
 		}
+		vm.TxShown = shown
+		vm.HasMoreTxs = shown < total
 	}
 
 	return vm, nil
