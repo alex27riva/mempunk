@@ -3,17 +3,14 @@
   <rect width="320" height="80" fill="#0a0e12" rx="4"/>
 
   <!-- lightning bolt -->
-  <path d="M30 12L18 38h8L24 68l20-34H34L30 12z" fill="#00ff9c"/>
+  <path d="M30 12L18 38h8L24 68l20-34H34L30 12z" fill="#f59e0b"/>
 
   <!-- wordmark -->
   <text x="62" y="36"
         font-family="ui-monospace, 'JetBrains Mono', 'Cascadia Code', Menlo, monospace"
-        font-size="28" font-weight="700" letter-spacing="1"
-        fill="#c8d0d8">mem</text>
-  <text x="131" y="36"
-        font-family="ui-monospace, 'JetBrains Mono', 'Cascadia Code', Menlo, monospace"
-        font-size="28" font-weight="700" letter-spacing="1"
-        fill="#00ff9c">punk</text>
+        font-size="28" font-weight="700" letter-spacing="1">
+    <tspan fill="#c8d0d8">mem</tspan><tspan fill="#f59e0b">punk</tspan>
+  </text>
 
   <!-- subtitle -->
   <text x="62" y="56"

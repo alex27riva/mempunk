@@ -1,5 +1,3 @@
-# ⚡ mempunk
-
 <img src="assets/logo.svg" alt="mempunk" width="320">
 
 A minimal, cyberpunk Bitcoin block explorer written in Go. Served directly from a Bitcoin Core full node over JSON-RPC. No database, no indexer, no JavaScript framework — just your node and a single static binary.
@@ -109,6 +107,54 @@ location / {
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
 }
+```
+
+## Running as a systemd service
+
+Create `/etc/systemd/system/mempunk.service`:
+
+```ini
+[Unit]
+Description=mempunk Bitcoin block explorer
+After=network.target bitcoind.service
+Wants=bitcoind.service
+
+[Service]
+Type=simple
+User=mempunk
+WorkingDirectory=/opt/mempunk
+ExecStart=/opt/mempunk/mempunk
+Restart=on-failure
+RestartSec=5
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Install and start:
+
+```sh
+# create dedicated user
+sudo useradd -r -s /sbin/nologin mempunk
+
+# install binary and config
+sudo mkdir -p /opt/mempunk
+sudo cp mempunk /opt/mempunk/
+sudo cp config.yaml /opt/mempunk/
+sudo chown -R mempunk:mempunk /opt/mempunk
+
+# enable and start
+sudo systemctl daemon-reload
+sudo systemctl enable --now mempunk
+
+# check logs
+sudo journalctl -u mempunk -f
+```
+
+If using cookie auth, grant the `mempunk` user read access to `.cookie`:
+
+```sh
+sudo usermod -aG bitcoin mempunk   # adjust group to match your bitcoind user
 ```
 
 ## bitcoin.conf
