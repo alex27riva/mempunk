@@ -14,7 +14,7 @@
 <section>
   <p style="margin-bottom:.75rem;color:var(--text-dim);font-size:.84rem">scanning block filters…</p>
   <div class="progress-bar">
-    <div class="progress-bar-fill" style="width:5%"></div>
+    <div class="progress-bar-indeterminate"></div>
   </div>
 </section>
 
@@ -54,7 +54,7 @@
     <tbody>
       {{ range .Data.Txs }}
       <tr>
-        <td class="mono hash"><a href="/tx/{{ .Txid }}">{{ .Txid }}</a></td>
+        <td class="mono hash"><a href="/tx/{{ .Txid }}">{{ shortenHash .Txid }}</a></td>
         <td class="mono hash"><a href="/block/{{ .BlockHash }}">{{ shortenHash .BlockHash }}</a></td>
         <td class="mono">{{ .Height }}</td>
         <td>{{ .Age }}</td>

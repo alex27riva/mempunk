@@ -292,6 +292,17 @@ details pre {
   background: var(--accent);
   transition: width .3s ease;
 }
+.progress-bar-indeterminate {
+  height: 100%;
+  width: 40%;
+  background: var(--accent);
+  border-radius: 2px;
+  animation: indeterminate 1.4s ease-in-out infinite;
+}
+@keyframes indeterminate {
+  0%   { transform: translateX(-100%); }
+  100% { transform: translateX(350%); }
+}
 
 /* ── error / empty states ────────────────────────────────────────────────── */
 
@@ -309,6 +320,13 @@ details pre {
 }
 
 .error-back { font-size: .84rem; }
+
+.load-more {
+  font-family: var(--mono);
+  font-size: .84rem;
+  color: var(--text-dim);
+  padding: .75rem 0;
+}
 
 /* ── scan links (address page) ───────────────────────────────────────────── */
 

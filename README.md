@@ -87,6 +87,8 @@ MEMPUNK_RPC_PASSWORD=secret MEMPUNK_LOG_LEVEL=debug ./mempunk
 | `log.format` | `text` | `text` \| `json` |
 | `explorer.latest_blocks` | `12` | Blocks shown on the overview page |
 | `explorer.block_tx_details` | `true` | Load full tx list on block pages |
+| `explorer.block_tx_page_size` | `200` | Initial tx count per block page; "load more" doubles it |
+| `explorer.shorten_hashes` | `true` | Show hashes as `00000000…392e92b5` in list views |
 | `explorer.cache_size` | `1000` | LRU cache entries (0 = disabled) |
 
 ## Running

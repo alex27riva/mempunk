@@ -62,7 +62,7 @@
     <tbody>
       {{ range .Data.UTXOs }}
       <tr>
-        <td class="mono hash"><a href="/tx/{{ .Txid }}">{{ .Txid }}</a></td>
+        <td class="mono hash"><a href="/tx/{{ .Txid }}">{{ shortenHash .Txid }}</a></td>
         <td class="mono">{{ .Vout }}</td>
         <td class="mono">{{ .Height }}</td>
         <td class="mono unspent">{{ .AmtBTC }}</td>
