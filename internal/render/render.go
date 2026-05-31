@@ -16,6 +16,7 @@ type Page struct {
 	Title       string
 	Network     string
 	AccentClass string
+	Version     string
 	Data        any
 }
 

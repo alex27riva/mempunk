@@ -40,6 +40,12 @@ cd mempunk
 go build -o mempunk ./cmd/mempunk
 ```
 
+To embed a version string (shown in the footer):
+
+```sh
+go build -ldflags "-X main.version=v1.0.0" -o mempunk ./cmd/mempunk
+```
+
 The binary embeds all templates and the stylesheet; no extra files needed at runtime.
 
 ## Configuration

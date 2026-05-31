@@ -13,14 +13,15 @@ import (
 
 // Handlers holds shared dependencies for all HTTP handlers.
 type Handlers struct {
-	ex  *explorer.Explorer
-	cfg *config.Config
-	log *slog.Logger
+	ex      *explorer.Explorer
+	cfg     *config.Config
+	log     *slog.Logger
+	version string
 }
 
 // New creates a Handlers instance. All parameters are required.
-func New(ex *explorer.Explorer, cfg *config.Config, log *slog.Logger) *Handlers {
-	return &Handlers{ex: ex, cfg: cfg, log: log}
+func New(ex *explorer.Explorer, cfg *config.Config, log *slog.Logger, version string) *Handlers {
+	return &Handlers{ex: ex, cfg: cfg, log: log, version: version}
 }
 
 // page renders name with data wrapped in a render.Page built from cfg.
@@ -30,6 +31,7 @@ func (h *Handlers) page(c echo.Context, name string, title string, data any) err
 		Title:       title,
 		Network:     string(h.cfg.Network),
 		AccentClass: p.AccentClass,
+		Version:     h.version,
 		Data:        data,
 	})
 }

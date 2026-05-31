@@ -20,6 +20,8 @@ import (
 	"github.com/labstack/echo/v4/middleware"
 )
 
+var version = "dev"
+
 func main() {
 	if err := run(); err != nil {
 		fmt.Fprintln(os.Stderr, "mempunk:", err)
@@ -34,7 +36,7 @@ func run() error {
 	}
 
 	log := buildLogger(cfg)
-	log.Info("starting mempunk", slog.Any("config", cfg))
+	log.Info("starting mempunk", slog.String("version", version), slog.Any("config", cfg))
 
 	rpcClient := rpc.New(cfg, log)
 	ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
@@ -51,7 +53,7 @@ func run() error {
 		return fmt.Errorf("build renderer: %w", err)
 	}
 
-	h := handlers.New(ex, cfg, log)
+	h := handlers.New(ex, cfg, log, version)
 
 	e := echo.New()
 	e.HideBanner = true
