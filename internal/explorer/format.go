@@ -42,6 +42,8 @@ func FormatAge(unixTime int64) string {
 // FormatSize formats a byte count as a human-readable string.
 func FormatSize(bytes int) string {
 	switch {
+	case bytes >= 1_000_000_000:
+		return fmt.Sprintf("%.2f GB", float64(bytes)/1_000_000_000)
 	case bytes >= 1_000_000:
 		return fmt.Sprintf("%.2f MB", float64(bytes)/1_000_000)
 	case bytes >= 1_000:
