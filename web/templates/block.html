@@ -100,7 +100,7 @@
     <tbody>
       {{ range .Data.Txs }}
       <tr>
-        <td class="mono hash"><a href="/tx/{{ .Txid }}">{{ .Txid }}</a></td>
+        <td class="mono hash"><a href="/tx/{{ .Txid }}">{{ shortenHash .Txid }}</a></td>
         <td class="mono">{{ .VSize }}</td>
         <td class="mono">{{ .Weight }}</td>
         <td class="mono">{{ len .Outputs }}</td>
