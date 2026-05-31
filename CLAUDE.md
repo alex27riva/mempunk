@@ -110,7 +110,7 @@ Minimal, fast, legible.
 
 - Single centered column, ~1000px max-width.
 - Monospace for data (`ui-monospace, "JetBrains Mono", "Cascadia Code", Menlo, monospace`).
-- CSS custom properties: `--bg #0a0e12`, `--text #c8d0d8`, `--accent #ff6600`,
+- CSS custom properties: `--bg #0a0e12`, `--text #c8d0d8`, `--accent #f59e0b`,
   `--accent-2 #00e5ff`, `--warn #ff2bd6`.
 - Per-network accent via `<body class="{{ .AccentClass }}">`:
   mainnet orange · testnet3 green · testnet4 purple · regtest cyan.
