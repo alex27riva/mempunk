@@ -75,7 +75,7 @@ rpc:
   # cookie_file: "/home/bitcoin/.bitcoin/.cookie"
 
 server:
-  listen: "127.0.0.1:8080"
+  listen: "0.0.0.0:2100"
 ```
 
 Every field can be overridden with a `MEMPUNK_*` environment variable:
@@ -112,11 +112,11 @@ go run ./cmd/mempunk
 
 mempunk verifies connectivity and chain on startup (`getblockchaininfo` + `getnetworkinfo`) and exits fast on misconfiguration.
 
-By default it listens on `127.0.0.1:8080`. To expose it publicly, put it behind a reverse proxy:
+By default it listens on `0.0.0.0:2100`. To expose it publicly, put it behind a reverse proxy:
 
 ```nginx
 location / {
-    proxy_pass http://127.0.0.1:8080;
+    proxy_pass http://127.0.0.1:2100;
     proxy_set_header Host $host;
     proxy_set_header X-Real-IP $remote_addr;
 }

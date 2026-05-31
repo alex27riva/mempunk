@@ -78,7 +78,7 @@ func TestDefaults(t *testing.T) {
 	if err := resolve(t, c); err != nil {
 		t.Fatal(err)
 	}
-	if c.RPC.Host != "127.0.0.1" || c.Server.Listen != "127.0.0.1:8080" {
+	if c.RPC.Host != "127.0.0.1" || c.Server.Listen != "0.0.0.0:2100" {
 		t.Errorf("host/listen defaults wrong: %q %q", c.RPC.Host, c.Server.Listen)
 	}
 	if c.Log.Level != "info" || c.Log.Format != "text" {

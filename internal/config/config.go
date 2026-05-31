@@ -279,7 +279,7 @@ func (c *Config) applyDefaults() {
 		}
 	}
 	if c.Server.Listen == "" {
-		c.Server.Listen = "127.0.0.1:8080"
+		c.Server.Listen = "0.0.0.0:2100"
 	}
 	if c.Log.Level == "" {
 		c.Log.Level = "info"
