@@ -110,10 +110,10 @@ Minimal, fast, legible.
 
 - Single centered column, ~1000px max-width.
 - Monospace for data (`ui-monospace, "JetBrains Mono", "Cascadia Code", Menlo, monospace`).
-- CSS custom properties: `--bg #0a0e12`, `--text #c8d0d8`, `--accent #00ff9c`,
+- CSS custom properties: `--bg #0a0e12`, `--text #c8d0d8`, `--accent #ff6600`,
   `--accent-2 #00e5ff`, `--warn #ff2bd6`.
 - Per-network accent via `<body class="{{ .AccentClass }}">`:
-  mainnet green · testnet3 cyan · testnet4 amber · regtest purple.
+  mainnet orange · testnet3 green · testnet4 purple · regtest cyan.
 - No-JS interactivity: `<details>`/`<summary>`, `:target`, `<table>`.
 - Template funcs: `btc` (sats→BTC string), `shortenHash`, `pct` (float 0–1 → "42%"),
   `add`, `not`.
