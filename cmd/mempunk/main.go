@@ -79,6 +79,7 @@ func run() error {
 	e.Static("/static", "") // served from embed via custom handler below
 	e.GET("/static/*", staticHandler())
 
+	e.GET("/health", h.Health)
 	e.GET("/", h.Overview)
 	e.GET("/block/:id", h.Block)
 	e.GET("/tx/:txid", h.Tx)
