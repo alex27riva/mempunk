@@ -122,7 +122,8 @@ type LogConfig struct {
 
 type ExplorerConfig struct {
 	LatestBlocks    int   `yaml:"latest_blocks"`
-	BlockTxDetails  *bool `yaml:"block_tx_details"` // pointer so default can be true
+	BlockTxDetails  *bool `yaml:"block_tx_details"`  // pointer so default can be true
+	ShortenHashes   *bool `yaml:"shorten_hashes"`    // pointer so default can be true
 	BlockTxPageSize int   `yaml:"block_tx_page_size"`
 	CacheSize       int   `yaml:"cache_size"`
 }
@@ -131,6 +132,12 @@ type ExplorerConfig struct {
 // Defaults to true when unset.
 func (e ExplorerConfig) ShowTxDetails() bool {
 	return e.BlockTxDetails == nil || *e.BlockTxDetails
+}
+
+// ShortenHashesEnabled reports whether hashes should be shortened in the UI.
+// Defaults to true when unset.
+func (e ExplorerConfig) ShortenHashesEnabled() bool {
+	return e.ShortenHashes == nil || *e.ShortenHashes
 }
 
 // TxPageSize returns the max transactions shown per block page. Defaults to 200.
@@ -239,6 +246,13 @@ func (c *Config) applyEnv() error {
 			return fmt.Errorf("MEMPUNK_EXPLORER_BLOCK_TX_DETAILS: %w", err)
 		}
 		c.Explorer.BlockTxDetails = &b
+	}
+	if v, ok := os.LookupEnv("MEMPUNK_EXPLORER_SHORTEN_HASHES"); ok {
+		b, err := strconv.ParseBool(v)
+		if err != nil {
+			return fmt.Errorf("MEMPUNK_EXPLORER_SHORTEN_HASHES: %w", err)
+		}
+		c.Explorer.ShortenHashes = &b
 	}
 	if v, ok := os.LookupEnv("MEMPUNK_EXPLORER_BLOCK_TX_PAGE_SIZE"); ok {
 		n, err := strconv.Atoi(v)
@@ -350,6 +364,7 @@ func (c Config) LogValue() slog.Value {
 		slog.String("log_format", c.Log.Format),
 		slog.Int("latest_blocks", c.Explorer.LatestBlocks),
 		slog.Bool("block_tx_details", c.Explorer.ShowTxDetails()),
+		slog.Bool("shorten_hashes", c.Explorer.ShortenHashesEnabled()),
 		slog.Int("block_tx_page_size", c.Explorer.TxPageSize()),
 		slog.Int("cache_size", c.Explorer.CacheSize),
 	}

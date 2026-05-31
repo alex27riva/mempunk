@@ -29,7 +29,9 @@ type Renderer struct {
 var _ echo.Renderer = (*Renderer)(nil)
 
 // New parses all page templates from fsys and returns a ready Renderer.
-func New(fsys fs.FS) (*Renderer, error) {
+// shortenHashes controls whether the shortenHash template func truncates hashes;
+// when false it becomes an identity function.
+func New(fsys fs.FS, shortenHashes bool) (*Renderer, error) {
 	entries, err := fs.ReadDir(fsys, "templates")
 	if err != nil {
 		return nil, fmt.Errorf("read templates dir: %w", err)
@@ -40,7 +42,7 @@ func New(fsys fs.FS) (*Renderer, error) {
 			continue
 		}
 		name := strings.TrimSuffix(e.Name(), ".html")
-		t, err := template.New("base").Funcs(funcMap()).ParseFS(fsys,
+		t, err := template.New("base").Funcs(funcMap(shortenHashes)).ParseFS(fsys,
 			"templates/base.html",
 			"templates/"+e.Name(),
 		)
@@ -61,10 +63,14 @@ func (r *Renderer) Render(w io.Writer, name string, data interface{}, c echo.Con
 	return t.ExecuteTemplate(w, "base", data)
 }
 
-func funcMap() template.FuncMap {
+func funcMap(shortenHashes bool) template.FuncMap {
+	shorten := shortenHash
+	if !shortenHashes {
+		shorten = func(h string) string { return h }
+	}
 	return template.FuncMap{
 		"btc":         formatBTC,
-		"shortenHash": shortenHash,
+		"shortenHash": shorten,
 		"add":         func(a, b int) int { return a + b },
 		"pct":         func(v float64) string { return fmt.Sprintf("%.0f%%", v*100) },
 		// not is needed because html/template has no built-in negation of values.

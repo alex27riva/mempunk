@@ -43,7 +43,7 @@
       {{ range .Data.RecentBlocks }}
       <tr>
         <td class="mono"><a href="/block/{{ .Height }}">{{ .Height }}</a></td>
-        <td class="mono hash"><a href="/block/{{ .Hash }}">{{ .Hash }}</a></td>
+        <td class="mono hash"><a href="/block/{{ .Hash }}">{{ shortenHash .Hash }}</a></td>
         <td>{{ .Age }}</td>
         <td class="mono">{{ .TxCount }}</td>
         <td class="mono">{{ .SizeFmt }}</td>

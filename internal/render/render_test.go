@@ -10,14 +10,14 @@ import (
 )
 
 func TestNew(t *testing.T) {
-	_, err := render.New(web.FS)
+	_, err := render.New(web.FS, true)
 	if err != nil {
 		t.Fatalf("New: %v", err)
 	}
 }
 
 func TestRenderOverview(t *testing.T) {
-	r, err := render.New(web.FS)
+	r, err := render.New(web.FS, true)
 	if err != nil {
 		t.Fatal(err)
 	}
@@ -60,7 +60,7 @@ func TestRenderOverview(t *testing.T) {
 }
 
 func TestRenderUnknownTemplate(t *testing.T) {
-	r, err := render.New(web.FS)
+	r, err := render.New(web.FS, true)
 	if err != nil {
 		t.Fatal(err)
 	}

@@ -46,7 +46,7 @@ func run() error {
 	lruCache := cache.New[json.RawMessage](cfg.Explorer.CacheSize)
 	ex := explorer.New(cfg, rpcClient, lruCache, log)
 
-	renderer, err := render.New(web.FS)
+	renderer, err := render.New(web.FS, cfg.Explorer.ShortenHashesEnabled())
 	if err != nil {
 		return fmt.Errorf("build renderer: %w", err)
 	}
