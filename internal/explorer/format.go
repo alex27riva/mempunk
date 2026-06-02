@@ -27,6 +27,9 @@ func FormatBTC(sats int64) string {
 // FormatAge returns a human-readable duration since unixTime.
 func FormatAge(unixTime int64) string {
 	d := time.Since(time.Unix(unixTime, 0))
+	if d < 0 {
+		return "just now"
+	}
 	switch {
 	case d < time.Minute:
 		return fmt.Sprintf("%ds ago", int(d.Seconds()))
